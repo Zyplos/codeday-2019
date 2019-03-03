@@ -1,19 +1,15 @@
 import Vue from "vue"
 import Router from "vue-router"
-import Home from "@/views/Home"
+import VueScrollTo from "vue-scrollto"
 import ChatRoom from "@/views/ChatRoom"
 
 Vue.use(Router)
+Vue.use(VueScrollTo)
 
 export default new Router({
   routes: [
     {
       path: "/",
-      name: "Home",
-      component: Home
-    },
-    {
-      path: "/chat",
       name: "ChatRoom",
       component: ChatRoom
     }

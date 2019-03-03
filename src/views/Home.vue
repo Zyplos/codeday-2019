@@ -1,20 +1,18 @@
 <template>
   <div>
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <p>{{ lat }}</p>
-    <p>{{ long }}</p>
-    <ChatRoom />
+    <div id="map" ref="map"></div>
   </div>
 </template>
 
 <script>
-import ChatRoom from "@/views/ChatRoom.vue"
-import googleMaps from "@google/maps"
+//import ChatRoom from "@/views/ChatRoom.vue"
+import googleGeo from "@google/maps"
+import loadGoogleMapsApi from "load-google-maps-api"
 
 export default {
-  components: {
-    ChatRoom
-  },
+  //components: {
+  //  ChatRoom
+  //},
   data() {
     return {
       lat: false,
@@ -22,7 +20,7 @@ export default {
     }
   },
   async mounted() {
-    const googleMapsClient = googleMaps.createClient({
+    const googleGeoClient = googleGeo.createClient({
       key: "AIzaSyB52jckwjMkkyeLAucMc6_gOBe1dZ4NpAA"
     })
     const vm = this
@@ -31,7 +29,7 @@ export default {
       navigator.geolocation.getCurrentPosition(function(position) {
         vm.lat = position.coords.latitude
         vm.long = position.coords.longitude
-        googleMapsClient.reverseGeocode(
+        googleGeoClient.reverseGeocode(
           {
             latlng: {
               lat: vm.lat,
@@ -48,10 +46,26 @@ export default {
             }
           }
         )
+
+        loadGoogleMapsApi({
+          key: "AIzaSyB52jckwjMkkyeLAucMc6_gOBe1dZ4NpAA"
+        })
+          .then(function(googleMaps) {
+            new googleMaps.Map(vm.$refs.map, {
+              center: {
+                lat: vm.lat,
+                lng: vm.long
+              },
+              zoom: 17
+            })
+          })
+          .catch(function(error) {
+            console.error(error)
+          })
       })
     }
   }
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

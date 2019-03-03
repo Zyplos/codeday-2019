@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <TheNavbar />
-    <router-view></router-view>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
@@ -19,6 +21,6 @@ export default {
 <style lang="scss">
 @import "./styles/groupup";
 body {
-  padding-top: 60px;
+  padding-top: 52px;
 }
 </style>
