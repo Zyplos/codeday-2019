@@ -2,7 +2,13 @@
   <div>
     <section class="neighborhood-info">
       <p class v-if="neighborhood">
-        Talking in {{ neighborhood.address_components[0].short_name }}
+        Talking in {{ neighborhood.address_components[0].short_name }} as
+        <input
+          type="text"
+          v-model="username"
+          class="ml-2"
+          id="username-input"
+        />
       </p>
     </section>
     <section class="message-list">
@@ -42,8 +48,14 @@
         <textarea
           v-model="message"
           class="flex-grow-1 message-textarea"
+          :disabled="hasNoUsername"
         ></textarea>
-        <button @click="sendMessage" id="send-button" class="btn btn-primary">
+        <button
+          @click="sendMessage"
+          id="send-button"
+          class="btn btn-primary"
+          :disabled="hasNoUsername"
+        >
           <svg
             version="1.1"
             id="Capa_1"
@@ -79,68 +91,8 @@ export default {
   data() {
     return {
       message: "",
-      messages: [
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        },
-        {
-          name: "Name",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis fuga aspernatur, aliquid quas voluptatibus veniam nesciunt voluptatum. Voluptatem libero itaque nihil quisquam eligendi, repellat eveniet doloribus ratione temporibus aperiam voluptate!",
-          timestamp: 1551601669726
-        }
-      ],
+      username: "",
+      messages: [],
       socket: false,
       neighborhood: false
     }
@@ -149,7 +101,7 @@ export default {
     sendMessage() {
       console.log(this.neighborhood.place_id)
       const messageObject = {
-        name: "Testerperson",
+        name: this.username,
         text: this.message,
         place_id: this.neighborhood.place_id,
         timestamp: Date.now()
@@ -208,6 +160,11 @@ export default {
   },
   mounted() {
     console.log("ChatRoom mounted")
+  },
+  computed: {
+    hasNoUsername: function() {
+      return this.username.length == 0
+    }
   }
 }
 </script>
@@ -221,6 +178,9 @@ export default {
   width: 100%;
   height: auto;
   bottom: 35px;
+}
+#username-input {
+  width: 34%;
 }
 .message {
   &-item {
@@ -247,7 +207,7 @@ export default {
     z-index: 10 !important;
   }
   &-list {
-    margin-bottom: 59px;
+    margin-bottom: 80px;
   }
 }
 </style>
